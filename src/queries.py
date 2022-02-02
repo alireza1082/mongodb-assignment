@@ -30,11 +30,6 @@ import os
 sys.path.insert(0, "..")
 
 
-# ## Import Dependencies 
-
-# In[ ]:
-
-
 import random
 import datetime
 
@@ -46,69 +41,30 @@ from src.utils import drop_db
 
 # ## Connect to Mock DB
 
-# In[ ]:
-
-
 from pymongo import MongoClient
 
 client = connect("assignment", host="mongodb://127.0.0.1:27017")
 
-
-# In[ ]:
-
-
 if not os.environ.get("TEST"):
     drop_db(client, "assignment")
 
-
 # ## Generate Fake Data & Insert Them to DB
-
-# In[ ]:
-
 
 if not os.environ.get("TEST"):
     initialize_db()
 
-
-# In[ ]:
-
-
 print(client.assignment.list_collection_names())
 print(client.assignment.patient.find_one())
 
-
 # ## Examples
 
-# In[ ]:
-
-
 print(client.assignment.drug.find_one({"formula": "CH3COOH"}))
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
 
 list(
     client.assignment.drug.aggregate(
         [{"$group": {"_id": "$formula", "count": {"$sum": 1}}}]
     )
 )
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
 
 client.assignment.patient.aggregate(
     [
@@ -125,17 +81,7 @@ client.assignment.patient.aggregate(
     ]
 ).next()
 
-
-# In[ ]:
-
-
-
-
-
 # ## Query Assignments
-
-# In[ ]:
-
 
 # نام داروخانه هایی که شماره تلفن آنها با 1+ شروع می شود
 print("##1##")
@@ -147,16 +93,6 @@ a1 = list(
 )
 # print(a1)
 
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
 # شماره ملی افرادی که بعد از تاریخ datetime.datetime(2000, 1, 1, 0, 0) متولد شده اند
 print("##2##")
 a2 = list(
@@ -167,32 +103,12 @@ a2 = list(
 )
 # print(a2)
 
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
 # تعداد نسخه هایی که دارای حداقل 15 دارو هستند
 print("##3##")
 a3 = client.assignment.prescription.find(
     filter={}  # Complete the filter
 ).count()
 # print(a3)
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
 
 # کد ملی بیمارانی که اسم پزشک آنها "Robert" است
 print("##4##")
@@ -204,16 +120,6 @@ a4 = list(
 )
 # print(a4)
 
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
 # نام داروخانه ای که دارویی به گرانترین قیمت به آن فروخته شده است
 print("##5##")
 a5 = client.assignment.sale.aggregate(
@@ -221,16 +127,6 @@ a5 = client.assignment.sale.aggregate(
     ]
 ).next()
 # print(a5)
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
 
 # نام و فرمول پنج دارویی که گران ترین قیمت برای آنها ثبت شده است
 print("##6##")
@@ -242,16 +138,6 @@ a6 = list(
 )
 # print(a6)
 
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
 # نام تمام داروهایی که در تاریخ datetime.datetime(2020, 9, 23, 0, 0) تجویز شده اند
 print("##7##")
 a7 = list(
@@ -261,16 +147,6 @@ a7 = list(
     )
 )
 # print(a7)
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
 
 # نام تمام کارخانه هایی که داروی با فرمول "C2H6Na4O12" را تولید می کنند
 print("##8##")
@@ -282,16 +158,6 @@ a8 = list(
 )
 # print(a8)
 
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
 # کاربرانی که در سبد آنها ده BasketItem وجود دارد
 print("##9##")
 a9 = list(
@@ -302,32 +168,12 @@ a9 = list(
 )
 # print(a9)
 
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
 print("##10##")
 a10 = client.assignment.product_item.aggregate(
     [  # Complete the pipeline
     ]
 ).next()
 # print(a10)
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
 
 # شماره ملی رانندگانی که پلاک آنها به 25 ختم می شود
 print("##11##")
@@ -339,16 +185,6 @@ a11 = list(
 )
 # print(a11)
 
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
 print("##12##")
 a12 = list(
     client.assignment.comment.find(
@@ -358,31 +194,11 @@ a12 = list(
 )
 # print(a12)
 
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
-
 print("##13##")
 a13 = client.assignment.comment.aggregate(
     []  # Complete the pipeline
 ).next()
 # print(a13)
-
-
-# In[ ]:
-
-
-
-
-
-# In[ ]:
-
 
 answers = {
     "a1": a1,
@@ -400,17 +216,9 @@ answers = {
     "a13": a13,
 }
 
-
-# In[ ]:
-
-
 import json
 with open("answers.json", "r") as json_file:
     target = json.load(json_file)
-
-
-# In[ ]:
-
 
 correct = 0
 for i in range(1, 14):
@@ -421,14 +229,9 @@ for i in range(1, 14):
         print("Query {:2d} Wrong!".format(i))
 print(correct)
 
-
 # ## Print Result to File  
-
-# In[ ]:
-
-
 # Set your student number
-student_number = 90000000
+student_number = 96105791
 file_path = os.path.join(
     os.getenv("OUTPUT_DIR", "."), "{}.json".format(student_number)
 )
@@ -441,10 +244,4 @@ with open(file_path, "w") as file:
         else:
             wrongs.append(i)
     json.dump({"corrects": corrects, "wrongs": wrongs, "score": len(corrects)}, file)
-
-
-# In[ ]:
-
-
-
 
